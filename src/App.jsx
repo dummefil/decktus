@@ -1,13 +1,14 @@
 import './App.css'
-import {useEffect, useState} from "react";
-
+import {breadcrumbsStepUp, setActiveTile, toggleEditMode} from "./store/system.slice.js";
+import {useDispatch, useSelector} from "react-redux";
+import {SettingsData} from "./data/SettingsData.jsx";
 //reserved port 8654
 
 const Text = ({children, onClick}) => {
     return <p onClick={onClick} style={{color: '#676767'}}>{children}</p>
 }
 
-const TileSetup = ({setTileSettings}) => {
+const TileEdit = ({setTileSettings}) => {
     const returnToMainScreen = () => {
         setTileSettings(null)
     }
@@ -17,24 +18,37 @@ const TileSetup = ({setTileSettings}) => {
     </>
 }
 
-
-const Tile = ({editMode, setTileEditing, settings} ) => {
+const Tile = ({settings}) => {
+    const dispatch = useDispatch();
+    const editMode = useSelector(state => state.system.editMode);
     const styles = {
         container: {
             display: 'flex',
             background: 'white',
-            height: '100px',
-            width: '100px'
+            aspectRatio: 1,
+            borderRadius: 4,
+            padding: 8
         }
     }
 
     const editTile = () => {
-        setTileEditing(settings)
+        dispatch(toggleEditMode());
     }
 
-    return <div style={styles.container}>
+    const onClick = () => {
+         if (settings.action === 'folder_open') {
+             dispatch(setActiveTile(settings));
+         } else {
+         }
+        // console.log(settings.action)
+    }
+
+    const Icon = settings.icon;
+
+    return <div style={styles.container} onClick={onClick}>
         {editMode && <Text onClick={editTile}>edit</Text>}
-        <Text>{settings.name}</Text>
+        <Text>{settings.name} {settings.id}</Text>
+        {Icon}
     </div>
 }
 
@@ -42,18 +56,16 @@ const Grid = ({ children, gap }) => {
     const styles = {
         container: {
             display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
+            gridTemplateColumns: 'repeat(2, 1fr)',
             gap,
-            gridAutoRows: 'minmax(100px, auto)'
         }
     }
     return <div style={styles.container}>
         {children}
     </div>
 }
-const userSettings = {
-    gap: 10
-}
+
+const userSettings = new SettingsData();
 
 function openFullscreen() {
     const elem = document.querySelector('#root')
@@ -67,39 +79,63 @@ function openFullscreen() {
     screen.orientation.lock('landscape').then(res=>console.log(res)).catch(err=>console.log(err))
 }
 
+const Breadcrumbs = () => {
+    const dispatch = useDispatch();
+    const breadcrumbs = useSelector(state => state.system.breadcrumbs);
+
+    if (breadcrumbs.length === 0) {
+        return;
+    }
+
+    const onReturn = () => {
+        dispatch(breadcrumbsStepUp());
+    }
+
+    return <div>
+        <button onClick={onReturn}>return</button>
+        <div>{breadcrumbs.join(' > ')}</div>
+    </div>
+}
 
 function App() {
-    const [editMode, setEditMode] = useState(false);
-    const [tileSettings, setTileSettings] = useState(null);
+    const editMode = useSelector(state => state.system.editMode);
+    const tile = useSelector(state => state.system.tile);
+    const tiles = useSelector(state => state.system.tiles);
+
     //todo theme mode, colors gaps, borders,
-
+    // todo 8 tiles per page/ or from user settings
     //todo fullscreen
-    if (editMode && tileSettings) {
-        return <TileSetup setTileSettings={setTileSettings}/>
+
+    if (editMode && tile) {
+        return <TileEdit />
     }
 
-    const changeEditMode = () =>{
-        debugger
-        setEditMode(!editMode)
-    }
-
-    const array = new Array(10).fill({
-        name: 'Tile name',
-        icon: 'Some icon',
-        action: 'Sends request to server'
-    });
-    const Tiles = array.map((itemSettings) => <Tile editMode={editMode} setTileEditing={setTileSettings} settings={itemSettings}/>)
-
+    const tileIsFolder = tile?.type === 'folder';
+    const Tiles = tiles
+        .map((itemSettings, i) =>
+            <Tile key={i} settings={itemSettings}/>
+        )
   return (
     <>
-        <label htmlFor="editMode" >Edit Mode</label>
-        <input type="checkbox" onChange={changeEditMode} id="editMode"/>
+        <Breadcrumbs/>
+        {tileIsFolder && `Folder ${tile.id}`}
+        <EditModeCheckbox/>
+        <button>добавить</button>
         <Grid gap={userSettings.gap}>
             {Tiles}
         </Grid>
         <div onClick={openFullscreen}>Open Full Screen</div>
     </>
   )
+}
+
+const EditModeCheckbox = () => {
+    return (
+        <>
+            <label htmlFor="editMode">Edit Mode</label>
+            <input type="checkbox" onChange={toggleEditMode} id="editMode"/>
+        </>
+    )
 }
 
 export default App
