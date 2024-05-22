@@ -2,28 +2,31 @@ import { createSlice, configureStore } from '@reduxjs/toolkit'
 import {TileData} from "../data/TileData.jsx";
 
 const createOne = () => {
-    const tile = TileData(1);
-    tile.linkedTo = [2,3,4,5,6,7,8,9];
+    const tile = TileData(0);
+    tile.linkedTo = [8, 9];
     return tile;
 }
 
+const t = createOne();
+
+const initialTiles = {
+    0: t,
+    1: TileData(1),
+    6: TileData(6),
+    7: TileData(7),
+}
+
 const initialState = {
-    tiles: [createOne()],
-    tile: null,
+    tiles: Object.values(initialTiles),
     currentFolder: null,
     breadcrumbs: [],
+    isInFolder: false,
     editMode: false,
     db: {
-        1: createOne(),
-        2: TileData(2),
-        3: TileData(3),
-        4: TileData(4),
-        5: TileData(5),
-        6: TileData(6),
-        7: TileData(7),
+        ...initialTiles,
         8: TileData(8),
-        9: TileData(9)
-    }
+        9: TileData(9),
+    },
 }
 
 const systemSlice = createSlice({
@@ -33,9 +36,9 @@ const systemSlice = createSlice({
         toggleEditMode (state) {
             state.editMode = !state.editMode;
         },
-        setActiveTile(state, {payload}) {
+        stepInFolder(state, {payload}) {
             const tile = payload;
-            state.tile = tile;
+            state.currentFolder = tile;
             if (payload.linkedTo?.length) {
                 state.tiles = payload.linkedTo.map((id) => state.db[id]);
             } else {
@@ -43,10 +46,18 @@ const systemSlice = createSlice({
             }
             state.breadcrumbs.push(tile.id);
         },
-        breadcrumbsStepUp(state) {
-            const id = state.breadcrumbs.pop();
-            const tile = state.db[id];
-            state.tiles = [tile];
+        stepOutFolder(state) {
+            const id = state.breadcrumbs[state.breadcrumbs.length - 2];
+            if (id === undefined) {
+                state.currentFolder = null;
+                state.tiles = Object.values(initialTiles);
+            } else {
+                const tile = state.db[id];
+                console.log(JSON.stringify(tile));
+                state.currentFolder = tile;
+                state.tiles = tile.linkedTo.map((id) => state.db[id]);
+            }
+            state.breadcrumbs.pop();
         }
 
     }
@@ -54,8 +65,8 @@ const systemSlice = createSlice({
 
 export const {
     toggleEditMode,
-    setActiveTile,
-    breadcrumbsStepUp
+    stepInFolder,
+    stepOutFolder
 } = systemSlice.actions
 
 export default systemSlice.reducer;

@@ -1,18 +1,19 @@
 const randomId = () => Math.random().toString().slice(2, 10)
 
 export function TileData(id, type = 'folder',) {
-    let _id = id || randomId();
+    let _id = id;
     const obj = {
         id: _id,
         type,
         name: 'Tile name',
+        linkedTo: [],
     };
 
     let icon;
     let action;
     let tiles;
     if (obj.type === 'folder') {
-        icon = 'faFolder';
+        icon = 'folder';
         action = 'folder_open';
     } else {
         icon = 'faGrinBeam';
