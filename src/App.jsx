@@ -25,25 +25,25 @@ function openFullscreen() {
 
 function App() {
     const editMode = useSelector(state => state.system.editMode);
-    const currentFolder = useSelector(state => state.system.currentFolder);
+    const currentTile = useSelector(state => state.system.currentTile);
     const tiles = useSelector(state => state.system.tiles);
 
     //todo theme mode, colors gaps, borders,
     // todo 8 tiles per page/ or from user settings
 
-    if (editMode && currentFolder) {
+    if (editMode && currentTile) {
         return <TileEdit />
     }
 
     const Tiles = tiles.map((itemSettings, i) => <Tile key={i} settings={itemSettings}/>)
-    if (currentFolder) {
+    if (currentTile) {
         Tiles.unshift(<FunctionalTile/>)
     }
 
     return (
         <>
             <Breadcrumbs/>
-            {currentFolder && `Folder ${currentFolder.id}`}
+            {currentTile && `Folder ${currentTile.id}`}
             <EditModeCheckbox/>
             <button>добавить</button>
             <Grid gap={userSettings.gap}>

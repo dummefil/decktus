@@ -1,9 +1,13 @@
-export const TileEdit = ({setTileSettings}) => {
-    const returnToMainScreen = () => {
-        setTileSettings(null)
-    }
+import {Text} from './Text.jsx';
+import {useSelector} from "react-redux";
+
+export const TileEdit = () => {
+    const settings = useSelector(state => state.system.currentTile);
+    const inputs = Object.entries(settings).map(([key, value]) =>
+        <Text>`${key} : ${value}\n`</Text>
+    );
     return <>
-        <div onClick={returnToMainScreen}>return</div>
         <Text>Edit</Text>
+        {inputs}
     </>
 }

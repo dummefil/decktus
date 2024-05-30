@@ -18,7 +18,7 @@ const initialTiles = {
 
 const initialState = {
     tiles: Object.values(initialTiles),
-    currentFolder: null,
+    currentTile: null,
     breadcrumbs: [],
     isInFolder: false,
     editMode: false,
@@ -38,7 +38,7 @@ const systemSlice = createSlice({
         },
         stepInFolder(state, {payload}) {
             const tile = payload;
-            state.currentFolder = tile;
+            state.currentTile = tile;
             if (payload.linkedTo?.length) {
                 state.tiles = payload.linkedTo.map((id) => state.db[id]);
             } else {
@@ -49,12 +49,12 @@ const systemSlice = createSlice({
         stepOutFolder(state) {
             const id = state.breadcrumbs[state.breadcrumbs.length - 2];
             if (id === undefined) {
-                state.currentFolder = null;
+                state.currentTile = null;
                 state.tiles = Object.values(initialTiles);
             } else {
                 const tile = state.db[id];
                 console.log(JSON.stringify(tile));
-                state.currentFolder = tile;
+                state.currentTile = tile;
                 state.tiles = tile.linkedTo.map((id) => state.db[id]);
             }
             state.breadcrumbs.pop();

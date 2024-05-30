@@ -40,12 +40,9 @@ export const Tile = ({settings}) => {
         }
         if (editMode) {
             console.log(`editing ${settings.id}`)
-            return
         }
         if (settings.action === 'folder_open') {
             dispatch(stepInFolder(settings));
-        } else {
-            console.log('something something')
         }
     }
 
