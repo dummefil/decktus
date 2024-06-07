@@ -9,4 +9,12 @@ export default defineConfig({
     react(),
   ],
   base: "./",
+  clearScreen: false,
+  server: {
+    port: 1420,
+    strictPort: true,
+    watch: {
+      ignored: ["**/src-tauri/**"],
+    },
+  },
 })
