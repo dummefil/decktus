@@ -6,7 +6,7 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "decktus-tauri",
+    "productName": "Decktus",
     "version": "0.0.0"
   },
   "tauri": {
@@ -19,7 +19,7 @@
     },
     "windows": [
       {
-        "title": "decktus-tauri",
+        "title": "Decktus",
         "width": 800,
         "height": 600
       }
@@ -30,7 +30,7 @@
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "com.tauri.dev",
+      "identifier": "io.github.dummefil",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",
