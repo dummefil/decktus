@@ -7,7 +7,7 @@ export const Breadcrumbs = () => {
         return;
     }
 
-    return <div>
-        <div>{breadcrumbs.join(' > ')}</div>
-    </div>
+    console.debug(`Moved to path ${breadcrumbs.join(' > ')}`);
+
+    return null;
 }

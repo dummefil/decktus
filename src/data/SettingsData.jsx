@@ -1,5 +1,7 @@
 export class SettingsData {
     constructor() {
-        this.gap = 10;
+        this.gap = 15;
+        this.maxRow = 6;
+        this.maxColumn = 3;
     }
 }

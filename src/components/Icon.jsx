@@ -1,5 +1,3 @@
-// import FolderIcon from '../icons/folder.svg?react';
-// import EditIcon from '../icons/edit.svg?react';
 import {lazy, Suspense} from "react";
 
 export const Icon = ({

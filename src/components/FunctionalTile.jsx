@@ -1,4 +1,4 @@
-import {Tile} from "./Tile.jsx";
+import {Tile} from "./Tile/Tile.jsx";
 import {useDispatch} from "react-redux";
 import {stepOutFolder} from "../store/system.slice.js";
 

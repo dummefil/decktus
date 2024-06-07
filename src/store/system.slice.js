@@ -1,19 +1,26 @@
-import { createSlice, configureStore } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 import {TileData} from "../data/TileData.jsx";
 
-const createOne = () => {
-    const tile = TileData(0);
-    tile.linkedTo = [8, 9];
-    return tile;
-}
-
-const t = createOne();
-
 const initialTiles = {
-    0: t,
+    // 0: t,
     1: TileData(1),
+    2: TileData(1),
+    3: TileData(1),
+    4: TileData(1),
+    5: TileData(1),
     6: TileData(6),
     7: TileData(7),
+    8: TileData(7),
+    9: TileData(7),
+    10: TileData(7),
+    11: TileData(7),
+    12: TileData(7),
+    13: TileData(7),
+    14: TileData(7),
+    15: TileData(7),
+    16: TileData(7),
+    17: TileData(7),
+    18: TileData(7),
 }
 
 const initialState = {
@@ -21,11 +28,9 @@ const initialState = {
     currentTile: null,
     breadcrumbs: [],
     isInFolder: false,
-    editMode: false,
+    editMode: window.location.pathname.indexOf('edit') > -1,
     db: {
         ...initialTiles,
-        8: TileData(8),
-        9: TileData(9),
     },
 }
 
@@ -33,9 +38,6 @@ const systemSlice = createSlice({
     name: 'system',
     initialState,
     reducers: {
-        toggleEditMode (state) {
-            state.editMode = !state.editMode;
-        },
         stepInFolder(state, {payload}) {
             const tile = payload;
             state.currentTile = tile;
@@ -53,7 +55,6 @@ const systemSlice = createSlice({
                 state.tiles = Object.values(initialTiles);
             } else {
                 const tile = state.db[id];
-                console.log(JSON.stringify(tile));
                 state.currentTile = tile;
                 state.tiles = tile.linkedTo.map((id) => state.db[id]);
             }
@@ -64,7 +65,6 @@ const systemSlice = createSlice({
 })
 
 export const {
-    toggleEditMode,
     stepInFolder,
     stepOutFolder
 } = systemSlice.actions
