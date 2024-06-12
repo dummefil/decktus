@@ -12,6 +12,7 @@
 
 
 ## iOS:
+* xcode tools
 * `brew install cocoapods`
 * `yarn tauri ios init`
 * `yarn tauri ios build`

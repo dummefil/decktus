@@ -1,37 +1,20 @@
 import './App.css'
-import {useSelector} from "react-redux";
-import {SettingsData} from "./data/SettingsData.jsx";
-import {Tile} from "./components/Tile/Tile.jsx";
-import {Grid} from "./components/Grid.jsx";
-import {Breadcrumbs} from "./components/Breadcrumbs.jsx";
-import {FunctionalTile} from "./components/FunctionalTile.jsx";
-import {FullScreenButton} from "./FullScreenButton.jsx";
+import {CompanionApp} from "./apps/CompanionApp";
+import {SetupApp} from "./apps/SetupApp";
 //reserved port 16341
 
-const userSettings = new SettingsData();
+const stringToBoolean = (str) => {
+    return str === 'true';
+}
 
 function App() {
-    const currentTile = useSelector(state => state.system.currentTile);
-    const tiles = useSelector(state => state.system.tiles);
+    const params = new URLSearchParams(location.search);
 
-    //todo theme mode, colors gaps, borders,
-    // todo 8 tiles per page/ or from user settings
-
-    const Tiles = tiles.map((itemSettings) => <Tile key={itemSettings.id} settings={itemSettings}/>)
-    if (currentTile) {
-        Tiles.unshift(<FunctionalTile key={'back'}/>)
+    if (stringToBoolean(params.get('edit'))) {
+        return <SetupApp />
     }
 
-    return (
-        <>
-            <Breadcrumbs/>
-            {currentTile && console.debug(`Folder opened ${currentTile.id}`)}
-            <Grid gap={userSettings.gap}>
-                {Tiles}
-            </Grid>
-            {/*<FullScreenButton/>*/}
-    </>
-  )
+    return <CompanionApp/>;
 }
 
 export default App
