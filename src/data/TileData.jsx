@@ -1,33 +1,32 @@
-import {TILE_DATA_TYPES} from "./TileTypes.js";
+import * as TILE_DATA_TYPES from "./TileTypes.js";
 
-const randomId = () => Math.random().toString().slice(2, 10)
+export const randomId = () => Math.random().toString().slice(2, 10)
 
-export function TileData() {
+export function TileData({ name, action, type, icon }) {
+    if (!TILE_DATA_TYPES[type.toUpperCase()]) {
+        throw new Error(`TileData type "${type}" is not supported`);
+    }
+
     let _id = randomId();
-    const obj = {
+    let _type = type;
+    let _name = name || _id;
+    let _icon;
+    let _action;
+
+    if (icon) {
+        _icon = icon;
+    }
+
+    if (action) {
+        _action = action
+    }
+
+    return  {
         id: _id,
-        type: (Math.random() > 0.5 ? TILE_DATA_TYPES.FOLDER : TILE_DATA_TYPES.FUNCTIONAL),
-        name: _id,
+        type: _type,
+        name: _name,
+        action: _action,
+        icon: _icon,
         linkedTo: [],
     };
-
-    let icon;
-    let action;
-    let tiles;
-    if (obj.type === TILE_DATA_TYPES.FOLDER) {
-        icon = 'folder';
-        action = 'folder_open';
-    } else if (obj.type === TILE_DATA_TYPES.FUNCTIONAL) {
-        icon = 'middle-finger';
-        action = `action_${_id}`;
-    }
-
-    if (tiles) {
-        obj.tiles = tiles;
-    }
-
-    obj.icon = icon;
-    obj.action = action;
-
-    return obj;
 }

@@ -1,6 +1,6 @@
 import {useSelector} from "react-redux";
 import {Tile} from "../components/Tile/Tile";
-import {FunctionalTile} from "../components/FunctionalTile";
+import {FunctionalTile} from "../components/Tile/FunctionalTile.jsx";
 import {Breadcrumbs} from "../components/Breadcrumbs";
 import {Grid} from "../components/Grid";
 import {FullScreenButton} from "../components/FullScreenButton";

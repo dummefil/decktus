@@ -1,8 +1,8 @@
 import {useDispatch} from "react-redux";
-import {stepInFolder} from "../../store/system.slice.js";
+import {setTile, stepInFolder} from "../../store/system.slice.js";
 import {Text} from '../Text';
 import {Icon} from "../Icon";
-import {TILE_DATA_TYPES} from "../../data/TileTypes.js";
+import * as TILE_DATA_TYPES from "../../data/TileTypes.js";
 import {TileHeader} from "./TileHeader";
 import {TileContainer} from "./TileContainer";
 import {useEffect, useRef, useState} from "react";
@@ -19,22 +19,23 @@ export const Tile = ({ settings }) => {
         target.addEventListener('drop', drop);
         function dragEnter(e) {
             e.preventDefault();
-            console.log(e);
         }
 
         function dragOver(e) {
             e.preventDefault();
-            console.log(e);
         }
 
         function dragLeave(e) {
-            console.log(e);
         }
 
         function drop(e) {
-            console.log(e);
-            const id = e.dataTransfer.getData('text/plain');
-            setDropped(id);
+            const _settings = JSON.parse(e.dataTransfer.getData('application/json'));
+            setDropped(_settings.name);
+            const tile = {
+                ..._settings,
+                id: settings.id
+            }
+            dispatch(setTile(tile))
         }
         return () => {
             if (target) {
@@ -64,6 +65,6 @@ export const Tile = ({ settings }) => {
         <TileHeader>
             <Text>{dropped}</Text>
         </TileHeader>
-        <Icon width={'80%'} height={'80%'} name={settings.icon}/>
+        {settings.icon && <Icon width={'80%'} height={'80%'} name={settings.icon}/>}
     </TileContainer>
 }

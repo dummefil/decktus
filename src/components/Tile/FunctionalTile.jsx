@@ -1,8 +1,8 @@
-import {Tile} from "./Tile/Tile";
+import {Tile} from "./Tile.jsx";
 import {useDispatch} from "react-redux";
-import {stepOutFolder} from "../store/system.slice.js";
+import {stepOutFolder} from "../../store/system.slice.js";
 
-export const FunctionalTile = () => {
+export const FunctionalTile = ({ icon, action }) => {
     const dispatch = useDispatch();
 
     const settings = {

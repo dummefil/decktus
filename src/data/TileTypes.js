@@ -1,4 +1,3 @@
-export const TILE_DATA_TYPES = {
-    FUNCTIONAL: 'functional',
-    FOLDER: 'folder',
-}
+export const FUNCTIONAL = 'functional';
+export const FOLDER = 'folder';
+export const BLANK = 'blank';
