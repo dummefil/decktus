@@ -78,7 +78,6 @@ const systemSlice = createSlice({
             }
             state.db[id] = updatedTile
             state.tiles = state.tiles.map((tile) => {
-                console.log(tile.id, id);
                 if (tile.id === id) {
                     return updatedTile
                 } else {

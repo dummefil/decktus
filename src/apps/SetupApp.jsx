@@ -11,8 +11,34 @@ export const SetupApp = () => {
     const currentTile = useSelector(state => state.system.currentTile);
     const tiles = useSelector(state => state.system.tiles);
     const presets = useSelector(state => state.system.presets);
+    const row = useSelector(state => state.settings.row);
+    const column = useSelector(state => state.settings.column);
 
-    const Tiles = tiles.map((itemSettings) => <Tile key={itemSettings.id} settings={itemSettings}/>)
+    const ref = useRef(null);
+
+    const [height, setHeight] = useState(150);
+    const [width, setWidth] = useState(150);
+
+    useEffect(() => {
+        const _height = (ref.current.offsetHeight / row) - 24;
+        const _width = (ref.current.offsetWidth / column) - 16;
+
+        const size = Math.min(_width, _height);
+
+        setHeight(size)
+        setWidth(size)
+
+        console.log(_height, _width);
+    }, []);
+
+    const Tiles = tiles.map((itemSettings) => {
+        return <Tile
+            key={itemSettings.id}
+            settings={itemSettings}
+            height={height}
+            width={width}
+        />
+    })
     if (currentTile) {
         Tiles.unshift(<FunctionalTile key={'back'}/>)
     }
@@ -20,7 +46,7 @@ export const SetupApp = () => {
     return <Panel $flex $row>
         <Panel $flex $column $width={'70%'}>
             <Panel>
-                <Grid>
+                <Grid ref={ref} $row={row} $column={column}>
                     {Tiles}
                 </Grid>
             </Panel>
@@ -30,7 +56,6 @@ export const SetupApp = () => {
         </Panel>
         <Panel $background={'rgb(85, 85, 85)'} $width={'30%'} $column $padding={0}>
             <Text $align={'center'}>Presets</Text>
-
             {presets.length && presets.map(presetGroup => <PresetGroup key={presetGroup.id} presetGroup={presetGroup}/>)}
         </Panel>
     </Panel>

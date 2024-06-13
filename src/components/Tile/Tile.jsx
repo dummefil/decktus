@@ -7,7 +7,7 @@ import {TileHeader} from "./TileHeader";
 import {TileContainer} from "./TileContainer";
 import {useEffect, useRef, useState} from "react";
 
-export const Tile = ({ settings }) => {
+export const Tile = ({ settings, height, width }) => {
     const dispatch = useDispatch();
     const ref = useRef(null);
     const [dropped, setDropped] = useState('');
@@ -45,7 +45,7 @@ export const Tile = ({ settings }) => {
                 target.removeEventListener('drop', drop);
             }
         }
-    }, []);
+    }, [settings.id]);
 
     const onClick = () => {
         if (settings.type === TILE_DATA_TYPES.FUNCTIONAL) {
@@ -61,7 +61,7 @@ export const Tile = ({ settings }) => {
         }
     }
 
-    return <TileContainer ref={ref} onClick={onClick}>
+    return <TileContainer ref={ref} onClick={onClick} $calculatedHeight={height} $calculatedWidth={width}>
         <TileHeader>
             <Text>{dropped}</Text>
         </TileHeader>

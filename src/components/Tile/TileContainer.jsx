@@ -10,6 +10,8 @@ export const TileContainer = styled.div`
     position: relative;
     justify-content: center;
     align-items: center;
+    height: ${({ $calculatedHeight }) => $calculatedHeight}px;
+    width: ${({$calculatedWidth}) => $calculatedWidth}px;
     ${Text} {
         text-align: center;
     }

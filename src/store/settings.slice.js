@@ -3,6 +3,8 @@ import {SettingsData} from "../data/SettingsData";
 
 const initialState = new SettingsData();
 
+console.log(initialState);
+
 const systemSlice = createSlice({
     name: 'settings',
     initialState,
