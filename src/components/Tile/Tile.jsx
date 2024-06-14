@@ -1,8 +1,8 @@
 import {useDispatch} from "react-redux";
-import {setTile, stepInFolder} from "../../store/system.slice.js";
+import {setTile, stepInFolder} from "../../store/system.slice";
 import {Text} from '../Text';
 import {Icon} from "../Icon";
-import * as TILE_DATA_TYPES from "../../data/TileTypes.js";
+import * as TILE_DATA_TYPES from "../../data/TileTypes";
 import {TileHeader} from "./TileHeader";
 import {TileContainer} from "./TileContainer";
 import {useRef, useState} from "react";

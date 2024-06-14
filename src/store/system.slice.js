@@ -1,20 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import {randomId, TileData} from "../data/TileData";
-import * as TILE_DATA_TYPES from "../data/TileTypes.js";
-
-class Localizator {
-    constructor() {
-        this.lang = 'ru';
-        this.dict = {
-            'presetGroup': 'Группа'
-        }
-    }
-    localize(id) {
-        return this.dict[id] || id;
-    }
-}
-
-const localizator = new Localizator()
+import * as TILE_DATA_TYPES from "../data/TileTypes";
+import {localizator} from "../i18n.js";
 
 function PresetGroup(children) {
     return {
@@ -73,8 +60,6 @@ const systemSlice = createSlice({
         setTile(state, {payload}) {
             const id = payload.id;
             const index = state.db.findIndex((_tile) => _tile.id === id)
-
-            console.log(index);
 
             const updatedTile = {
                 ...state.db[index],

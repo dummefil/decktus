@@ -1,4 +1,4 @@
-import * as TILE_DATA_TYPES from "./TileTypes.js";
+import * as TILE_DATA_TYPES from "./TileTypes";
 
 export const randomId = () => Math.random().toString().slice(2, 10)
 

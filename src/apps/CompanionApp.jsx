@@ -1,32 +1,13 @@
 import {useSelector} from "react-redux";
-import {Tile} from "../components/Tile/Tile";
-import {FunctionalTile} from "../components/Tile/FunctionalTile.jsx";
 import {Breadcrumbs} from "../components/Breadcrumbs";
 import {Grid} from "../components/Grid";
 import {FullScreenButton} from "../components/FullScreenButton";
-import {Panel} from "../components/Panel.jsx";
-import {useRef,} from "react";
-import {useTileSize} from "../hooks/useTileSize.jsx";
+import {Panel} from "../components/Panel";
+import {useTiles} from "../hooks/useTiles";
 
 export const CompanionApp = () => {
     const currentTile = useSelector(state => state.system.currentTile);
-    const isInFolder = useSelector(state => state.system.isInFolder);
-    const tiles = useSelector(state => state.system.tiles);
-    const ref = useRef(null);
-
-    const size = useTileSize(ref);
-
-    const Tiles = tiles.map((itemSettings) => {
-        return <Tile
-            key={itemSettings.id}
-            settings={itemSettings}
-            size={size}
-        />
-        }
-    )
-    if (currentTile && isInFolder) {
-        Tiles.unshift(<FunctionalTile size={size} key={'back'}/>)
-    }
+    const [ref, Tiles] = useTiles();
 
     return (
         <Panel ref={ref} $column>

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {Text} from "../Text.jsx";
+import {Text} from "../Text";
 
 export const TileContainer = styled.div`
     display: flex;
