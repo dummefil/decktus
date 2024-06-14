@@ -1,4 +1,14 @@
 import {useState} from "react";
+import styled from "styled-components";
+
+const Button = styled.button`
+    display: flex;
+    height: 50px;
+    width: 50px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+`
 
 function openFullscreen(fullScreen, setFullScreen) {
     const elem = document.querySelector('body');
@@ -22,5 +32,5 @@ function openFullscreen(fullScreen, setFullScreen) {
 
 export const FullScreenButton = () => {
     const [fullScreen, setFullScreen] = useState(false)
-    return <button onClick={() => openFullscreen(fullScreen, setFullScreen)}>Open Full Screen</button>
+    return <Button onClick={() => openFullscreen(fullScreen, setFullScreen)}></Button>
 }
