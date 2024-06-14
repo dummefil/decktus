@@ -2,7 +2,7 @@ import {Tile} from "./Tile.jsx";
 import {useDispatch} from "react-redux";
 import {stepOutFolder} from "../../store/system.slice.js";
 
-export const FunctionalTile = ({ icon, action }) => {
+export const FunctionalTile = ({ icon, action, size }) => {
     const dispatch = useDispatch();
 
     const settings = {
@@ -12,5 +12,5 @@ export const FunctionalTile = ({ icon, action }) => {
             dispatch(stepOutFolder())
         }
     }
-    return <Tile key={'back-button'} settings={settings}/>
+    return <Tile key={'back-button'} size={size} settings={settings}/>
 }

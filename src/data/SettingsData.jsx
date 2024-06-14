@@ -3,8 +3,11 @@
 // todo 8 tiles per page/ or from user settings
 
 export function SettingsData ()  {
+    const column = 6;
+    const row = 3;
     return {
-        column: 6,
-        row: 3,
+        column,
+        row,
+        tilesCount: column * row,
     }
 }

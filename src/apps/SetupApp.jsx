@@ -11,19 +11,23 @@ import {useTileSize} from "../hooks/useTileSize.jsx";
 export const SetupApp = () => {
     const currentTile = useSelector(state => state.system.currentTile);
     const tiles = useSelector(state => state.system.tiles);
+    const db = useSelector(state => state.system.db);
+    const isInFolder = useSelector(state => state.system.isInFolder);
     const presets = useSelector(state => state.system.presets);
+    const tilesCount = useSelector(state => state.settings.tilesCount);
     const ref = useRef(null);
     const size = useTileSize(ref);
 
-    const Tiles = tiles.map((itemSettings) => {
+    const Tiles = (tiles.length ? tiles : db.slice(0, tilesCount) ).map((itemSettings) => {
+        console.log(itemSettings.type);
         return <Tile
             key={itemSettings.id}
             settings={itemSettings}
             size={size}
         />
     })
-    if (currentTile) {
-        Tiles.unshift(<FunctionalTile key={'back'}/>)
+    if (currentTile && isInFolder) {
+        Tiles.unshift(<FunctionalTile size={size} key={'back'}/>)
     }
 
     return <Panel $flex $row>
@@ -33,8 +37,9 @@ export const SetupApp = () => {
                     {Tiles}
                 </Grid>
             </Panel>
-            <Panel>
+            <Panel $column>
                 <Text>This is Edit block</Text>
+                {currentTile && Object.entries(currentTile).map((entry) => <p>${entry.join(': ')}</p>)}
             </Panel>
         </Panel>
         <Panel $background={'rgb(85, 85, 85)'} $width={'30%'} $column $padding={0}>

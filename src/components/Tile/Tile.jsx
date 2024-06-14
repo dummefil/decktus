@@ -10,7 +10,6 @@ import {useRef, useState} from "react";
 export const Tile = ({ settings, size }) => {
     const dispatch = useDispatch();
     const ref = useRef(null);
-    const [dropped, setDropped] = useState('');
     const [isActive, setIsActive] = useState(false);
 
     const dragEnter = (e) => {
@@ -30,7 +29,6 @@ export const Tile = ({ settings, size }) => {
     const drop = (e) => {
         e.stopPropagation();
         const _settings = JSON.parse(e.dataTransfer.getData('application/json'));
-        setDropped(_settings.name);
         const tile = {
             ..._settings,
             id: settings.id
@@ -55,7 +53,7 @@ export const Tile = ({ settings, size }) => {
 
     return <TileContainer onDragEnter={dragEnter} onDrop={drop} onDragOver={dragOver} onDragLeave={dragLeave} $isActive={isActive} ref={ref} onClick={onClick} $calculatedSize={size}>
         <TileHeader>
-            <Text>{dropped}</Text>
+            <Text>{settings.name}</Text>
         </TileHeader>
         {settings.icon && <Icon width={'80%'} height={'80%'} name={settings.icon}/>}
     </TileContainer>

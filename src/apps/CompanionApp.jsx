@@ -10,6 +10,7 @@ import {useTileSize} from "../hooks/useTileSize.jsx";
 
 export const CompanionApp = () => {
     const currentTile = useSelector(state => state.system.currentTile);
+    const isInFolder = useSelector(state => state.system.isInFolder);
     const tiles = useSelector(state => state.system.tiles);
     const ref = useRef(null);
 
@@ -23,8 +24,8 @@ export const CompanionApp = () => {
         />
         }
     )
-    if (currentTile) {
-        Tiles.unshift(<FunctionalTile key={'back'}/>)
+    if (currentTile && isInFolder) {
+        Tiles.unshift(<FunctionalTile size={size} key={'back'}/>)
     }
 
     return (
