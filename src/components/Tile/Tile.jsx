@@ -5,47 +5,39 @@ import {Icon} from "../Icon";
 import * as TILE_DATA_TYPES from "../../data/TileTypes.js";
 import {TileHeader} from "./TileHeader";
 import {TileContainer} from "./TileContainer";
-import {useEffect, useRef, useState} from "react";
+import {useRef, useState} from "react";
 
 export const Tile = ({ settings, height, width }) => {
     const dispatch = useDispatch();
     const ref = useRef(null);
     const [dropped, setDropped] = useState('');
-    useEffect(() => {
-        const target = ref.current;
-        target.addEventListener('dragenter', dragEnter)
-        target.addEventListener('dragover', dragOver);
-        target.addEventListener('dragleave', dragLeave);
-        target.addEventListener('drop', drop);
-        function dragEnter(e) {
-            e.preventDefault();
-        }
+    const [isActive, setIsActive] = useState(false);
 
-        function dragOver(e) {
-            e.preventDefault();
-        }
+    const dragEnter = (e) => {
+        e.preventDefault();
+        setIsActive(true);
+    }
 
-        function dragLeave(e) {
-        }
+     const dragOver = (e) => {
+        e.preventDefault();
+    }
 
-        function drop(e) {
-            const _settings = JSON.parse(e.dataTransfer.getData('application/json'));
-            setDropped(_settings.name);
-            const tile = {
-                ..._settings,
-                id: settings.id
-            }
-            dispatch(setTile(tile))
+    const dragLeave = (e) => {
+        e.preventDefault();
+        setIsActive(false);
+    }
+
+    const drop = (e) => {
+        e.stopPropagation();
+        const _settings = JSON.parse(e.dataTransfer.getData('application/json'));
+        setDropped(_settings.name);
+        const tile = {
+            ..._settings,
+            id: settings.id
         }
-        return () => {
-            if (target) {
-                target.removeEventListener('dragenter', dragEnter)
-                target.removeEventListener('dragover', dragOver);
-                target.removeEventListener('dragleave', dragLeave);
-                target.removeEventListener('drop', drop);
-            }
-        }
-    }, [settings.id]);
+        dispatch(setTile(tile))
+        setIsActive(false);
+    }
 
     const onClick = () => {
         if (settings.type === TILE_DATA_TYPES.FUNCTIONAL) {
@@ -61,7 +53,7 @@ export const Tile = ({ settings, height, width }) => {
         }
     }
 
-    return <TileContainer ref={ref} onClick={onClick} $calculatedHeight={height} $calculatedWidth={width}>
+    return <TileContainer onDragEnter={dragEnter} onDrop={drop} onDragOver={dragOver} onDragLeave={dragLeave} $isActive={isActive} ref={ref} onClick={onClick} $calculatedHeight={height} $calculatedWidth={width}>
         <TileHeader>
             <Text>{dropped}</Text>
         </TileHeader>
