@@ -12,8 +12,8 @@ export const TileContainer = styled.div`
     transition: 0.2s all;
     border: solid 3px ${({$isActive}) => $isActive ? '#ffc758' : 'rgb(61, 61, 61)'};
     
-    height: ${({ $calculatedHeight }) => $calculatedHeight}px;
-    width: ${({$calculatedWidth}) => $calculatedWidth}px;
+    height: ${({ $calculatedSize }) => $calculatedSize}px;
+    width: ${({$calculatedSize}) => $calculatedSize}px;
     ${Text} {
         text-align: center;
     }

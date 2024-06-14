@@ -6,37 +6,20 @@ import {useSelector} from "react-redux";
 import {Grid} from "../components/Grid.jsx";
 import {useEffect, useRef, useState} from "react";
 import styled from "styled-components";
+import {useTileSize} from "../hooks/useTileSize.jsx";
 
 export const SetupApp = () => {
     const currentTile = useSelector(state => state.system.currentTile);
     const tiles = useSelector(state => state.system.tiles);
     const presets = useSelector(state => state.system.presets);
-    const row = useSelector(state => state.settings.row);
-    const column = useSelector(state => state.settings.column);
-
     const ref = useRef(null);
-
-    const [height, setHeight] = useState(150);
-    const [width, setWidth] = useState(150);
-
-    useEffect(() => {
-        const _height = (ref.current.offsetHeight / row) - 24;
-        const _width = (ref.current.offsetWidth / column) - 16;
-
-        const size = Math.min(_width, _height);
-
-        setHeight(size)
-        setWidth(size)
-
-        console.log(_height, _width);
-    }, []);
+    const size = useTileSize(ref);
 
     const Tiles = tiles.map((itemSettings) => {
         return <Tile
             key={itemSettings.id}
             settings={itemSettings}
-            height={height}
-            width={width}
+            size={size}
         />
     })
     if (currentTile) {
@@ -46,7 +29,7 @@ export const SetupApp = () => {
     return <Panel $flex $row>
         <Panel $flex $column $width={'70%'}>
             <Panel>
-                <Grid ref={ref} $row={row} $column={column}>
+                <Grid $ref={ref}>
                     {Tiles}
                 </Grid>
             </Panel>

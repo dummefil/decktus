@@ -7,7 +7,7 @@ import {TileHeader} from "./TileHeader";
 import {TileContainer} from "./TileContainer";
 import {useRef, useState} from "react";
 
-export const Tile = ({ settings, height, width }) => {
+export const Tile = ({ settings, size }) => {
     const dispatch = useDispatch();
     const ref = useRef(null);
     const [dropped, setDropped] = useState('');
@@ -53,7 +53,7 @@ export const Tile = ({ settings, height, width }) => {
         }
     }
 
-    return <TileContainer onDragEnter={dragEnter} onDrop={drop} onDragOver={dragOver} onDragLeave={dragLeave} $isActive={isActive} ref={ref} onClick={onClick} $calculatedHeight={height} $calculatedWidth={width}>
+    return <TileContainer onDragEnter={dragEnter} onDrop={drop} onDragOver={dragOver} onDragLeave={dragLeave} $isActive={isActive} ref={ref} onClick={onClick} $calculatedSize={size}>
         <TileHeader>
             <Text>{dropped}</Text>
         </TileHeader>
