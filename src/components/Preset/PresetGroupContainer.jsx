@@ -7,4 +7,5 @@ export const PresetGroupContainer = styled.div`
     flex-direction: column;
     padding-left: 12px;
     padding-right: 12px;
+    justify-items: center;
 `

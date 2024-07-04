@@ -5,6 +5,7 @@ import {localizator} from "../i18n.js";
 
 function PresetGroup(children) {
     return {
+        icon: 'list',
         type: 'preset-group',
         name: localizator.localize('presetGroup'),
         id: randomId(),
@@ -42,15 +43,29 @@ const initialGrid = (tilesCount) => {
     return arr;
 }
 
+const stringToBoolean = (str) => {
+    return str === 'true';
+}
+
 const tilesCount = 3 * 6;
 
+const key = 'decktus_DB';
+const savedDB = localStorage.getItem(key);
+let json;
+if (savedDB) {
+    json = JSON.parse(savedDB);
+    console.log('trying to load saved db', json);
+}
+
+
 const initialState = {
+    isEditMode: stringToBoolean((new URLSearchParams(location.search).get('edit'))),
     tiles: [],
     currentTile: null,
     breadcrumbs: [],
     isInFolder: false,
     presets,
-    db: initialGrid(tilesCount),
+    db: json || initialGrid(tilesCount),
 }
 
 const systemSlice = createSlice({
@@ -75,8 +90,6 @@ const systemSlice = createSlice({
                 }
             })
             state.currentTile = state.db[index];
-
-
         },
         stepInFolder(state, {payload}) {
             const tile = {

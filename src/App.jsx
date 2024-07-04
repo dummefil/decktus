@@ -1,17 +1,14 @@
 import './App.css'
 import {CompanionApp} from "./apps/CompanionApp";
-import {SetupApp} from "./apps/SetupApp";
+import {ConfigurationApp} from "./apps/ConfigurationApp.jsx";
+import {useSelector} from "react-redux";
 //reserved port 16341
 
-const stringToBoolean = (str) => {
-    return str === 'true';
-}
-
 function App() {
-    const params = new URLSearchParams(location.search);
+    const isEditMode = useSelector(state => state.system.isEditMode);
 
-    if (stringToBoolean(params.get('edit'))) {
-        return <SetupApp />
+    if (isEditMode) {
+        return <ConfigurationApp />
     }
 
     return <CompanionApp/>;
